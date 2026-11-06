@@ -1,0 +1,9 @@
+# Secrets
+.env.exemple
+.env
+# Données (licence CC BY-NC-SA, fichiers volumineux)
+data/
+*.csv
+# Python
+__pycache__/
+.venv/

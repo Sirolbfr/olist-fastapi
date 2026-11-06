@@ -117,7 +117,7 @@ Dans un terminal :
 Windows      : py --version
 macOS/Linux  : python3 --version
 ```
-- [ ] La version est **3.10 ou plus récente**. Sinon, appelle le formateur avant d'aller plus loin.
+- [x] La version est **3.10 ou plus récente**. Sinon, appelle le formateur avant d'aller plus loin.
 
 ### Étape 3.2 — Récupérer le projet *(3 min)*
 
@@ -125,7 +125,7 @@ macOS/Linux  : python3 --version
 2. Tu obtiens un dossier `api_olist` et un fichier `olist_ventes.sql` (pour le J2).
 3. Ouvre le **dossier** `api_olist` dans VS Code : **Fichier › Ouvrir le dossier**.
 
-- [ ] Je vois dans VS Code : `main.py`, `donnees_csv.py`, `donnees_pg.py`, `erreurs.py`, `client.py`, `verifier_sources.py`, `requirements.txt`, `.env.exemple`, `.gitignore`, `README.md` et le dossier `data/`.
+- [x] Je vois dans VS Code : `main.py`, `donnees_csv.py`, `donnees_pg.py`, `erreurs.py`, `client.py`, `verifier_sources.py`, `requirements.txt`, `.env.exemple`, `.gitignore`, `README.md` et le dossier `data/`.
 
 💡 Le fichier `data/ventes_olist.csv` est l'export de lundi (mission 6), identique pour tout le groupe. Tous les chiffres de référence de ce brief viennent de lui.
 
@@ -400,7 +400,7 @@ Cette fois, **tu écris toi-même** le modèle et la route, en suivant les missi
 📘 Le script crée le schéma `analytique` et sa table `ventes` : les mêmes 110 197 lignes que `ventes_olist.csv`. Il donne au compte `lecteur_olist` le droit de **lire** (`SELECT`), rien d'autre. Si le compte n'existe pas encore, le script le crée, avec le mot de passe `olist2026`.
 
 ✅ **Je vérifie**
-- [ ] J'ai lu 110197, 96478 et 15424463.65.
+- [x] J'ai lu 110197, 96478 et 15424463.65.
 
 ➡️ [Journal › M7](journal_api_olist.md#j-m7)
 
@@ -472,8 +472,8 @@ _lire("SELECT ... WHERE customer_state = %(code)s", {"code": code})
 📘 **Laisse la base calculer.** On ne rapatrie pas 110 197 lignes dans Python pour les additionner : PostgreSQL renvoie directement 12 lignes ou 1 ligne. C'est le principe vu en S42.
 
 ✅ **Je vérifie**
-- [ ] `py verifier_sources.py` affiche **8/8 fonctions identiques**.
-- [ ] Aucune requête de `donnees_pg.py` ne contient de `f"` ni de `+` pour insérer une valeur.
+- [x] `py verifier_sources.py` affiche **8/8 fonctions identiques**.
+- [x] Aucune requête de `donnees_pg.py` ne contient de `f"` ni de `+` pour insérer une valeur.
 
 **Ça bloque ?**
 - *`SourceIndisponible: Base PostgreSQL injoignable`* : PostgreSQL est arrêté, ou une valeur de `.env` est fausse.
@@ -523,9 +523,9 @@ _lire("SELECT ... WHERE customer_state = %(code)s", {"code": code})
 📘 **Ce que Rafael n'a pas eu à changer** : ni les adresses, ni les paramètres, ni le format des réponses. Seule la **cuisine** a changé.
 
 ✅ **Je vérifie**
-- [ ] `/sante` affiche `"source": "postgresql"` et `110197` lignes.
-- [ ] Avec `PGPORT=5999`, `/indicateurs` renvoie **503** avec `Base PostgreSQL injoignable`.
-- [ ] `PGPORT` est revenu à `5432`.
+- [x] `/sante` affiche `"source": "postgresql"` et `110197` lignes.
+- [x] Avec `PGPORT=5999`, `/indicateurs` renvoie **503** avec `Base PostgreSQL injoignable`.
+- [x] `PGPORT` est revenu à `5432`.
 
 ➡️ [Journal › M10](journal_api_olist.md#j-m10)
 
@@ -547,8 +547,8 @@ _lire("SELECT ... WHERE customer_state = %(code)s", {"code": code})
 📘 **Pour les blocs 4 et 5**, inspire-toi du bloc 3 : `appeler("/categories/top", {"n": 3}).json()`.
 
 ✅ **Je vérifie**
-- [ ] Le script affiche **Bilan : 10/10 contrôles réussis**.
-- [ ] Le fichier `ca_mensuel_2017.csv` est créé et contient 12 mois, plus la ligne d'en-tête.
+- [x] Le script affiche **Bilan : 10/10 contrôles réussis**.
+- [x] Le fichier `ca_mensuel_2017.csv` est créé et contient 12 mois, plus la ligne d'en-tête.
 
 ➡️ [Journal › M11](journal_api_olist.md#j-m11)
 

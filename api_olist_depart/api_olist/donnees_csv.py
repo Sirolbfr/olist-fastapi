@@ -98,7 +98,7 @@ def etat(code: str) -> dict | None:
     ca = float(e["montant"].sum())
     return {
         "etat": code,
-        "ca": ca,
+        "ca": round(ca, 2),
         "nb_commandes": e["order_id"].nunique(),
         "part_ca": round(float(ca / v["montant"].sum() * 100), 2),  # part du CA total, en %, arrondie à 2 décimales
     }

@@ -30,6 +30,8 @@ for intitule, appel in ESSAIS:
     try:
         identique = normaliser(appel(donnees_csv)) == normaliser(appel(donnees_pg))
         print(("✅ " if identique else "❌ ") + intitule + ("" if identique else "  → résultats différents"))
+        if not identique :
+            print (normaliser(appel(donnees_csv)), normaliser(appel(donnees_pg)), sep="\n")
     except Exception as erreur:
         identique = False
         print(f"❌ {intitule}  → erreur : {type(erreur).__name__} : {erreur}")

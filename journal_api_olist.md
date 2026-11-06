@@ -168,7 +168,7 @@ Pour chaque test : le code obtenu, puis une valeur lue dans la réponse.
 
 - Résultat de la commande de test : lecteur_olist
 - Rôle de `.env` : sécuriser les secrets
-- Rôle de `.env.exemple` : template
+- Rôle de `.env.exemple` : bah exemple
 - Rôle de la ligne `.env` dans `.gitignore` : ignore le .env
 - J'ai vérifié qu'aucun `.py` ne contient le mot de passe (oui / non) : oui
 
@@ -177,53 +177,65 @@ Pour chaque test : le code obtenu, puis une valeur lue dans la réponse.
 
 ### Résultat de `verifier_sources.py`
 
-- Bilan affiché : … / 8
-- Fonction qui m'a demandé le plus de corrections, et pourquoi : …
+- Bilan affiché : 8 / 8
+- Fonction qui m'a demandé le plus de corrections, et pourquoi : etat, j'avais oublié un round(ca, 2) dans le modèle de données csv qui faussait la vérification
 
 ### Ma requête de `top_categories()` (copie-la)
 
 ```sql
-…
+SELECT categorie,
+round(sum(montant), 2) AS ca,
+round(100 * sum(montant) / (SELECT sum(montant) FROM analytique.ventes), 2) AS part_ca
+FROM analytique.ventes
+GROUP BY categorie
+ORDER BY ca DESC
+LIMIT %(n)s
 ```
 
 ### Sécurité
 
-- Pourquoi `%(code)s` plutôt qu'une f-string ? Donne l'exemple d'une valeur dangereuse. …
-- Pourquoi faire calculer PostgreSQL plutôt que Python ? …
+- Pourquoi `%(code)s` plutôt qu'une f-string ? Donne l'exemple d'une valeur dangereuse. 
+> J'avoue j'ai pas très bien compris mais en gros pour éviter une injection SQL avec une condition vraie quoi qu'il arrive où ca prend des valeurs qui ne sont pas censées être lues
+
+- Pourquoi faire calculer PostgreSQL plutôt que Python ? 
+> C'est plus opti
 
 <a id="j-m10"></a>
 ## M10 — Basculer l'API sur PostgreSQL
 
-- `/sante` après la bascule : source … , lignes …
-- Pourquoi il faut relancer l'API après avoir modifié `.env` : …
-- Test de panne (`PGPORT=5999`) : code … , message …
-- Ce qu'aurait vu Rafael sans le gestionnaire d'erreur `SourceIndisponible` : …
-- Ce que Rafael a dû changer dans son code pour la bascule : …
+- Pourquoi il faut relancer l'API après avoir modifié `.env` : parce que ce fichier n'est pas suivi
+- Ce qu'aurait vu Rafael sans le gestionnaire d'erreur `SourceIndisponible` : 500
+- Ce que Rafael a dû changer dans son code pour la bascule : @app.exception_handler(SourceIndisponible)
+- [x] `/sante` affiche `"source": "postgresql"` et `110197` lignes.
+- [x] Avec `PGPORT=5999`, `/indicateurs` renvoie **503** avec `Base PostgreSQL injoignable`.
+- [x] `PGPORT` est revenu à `5432`.
 
 <a id="j-m11"></a>
 ## M11 — Écrire le client de Rafael
 
-- Bilan affiché par `client.py` : … / 10
-- Nombre de lignes de `ca_mensuel_2017.csv`, en-tête compris : …
-- Différence entre `.status_code` et `.json()` : …
-- Utilité du paramètre `timeout` : …
+- Bilan affiché par `client.py` : 10 / 10
+- Nombre de lignes de `ca_mensuel_2017.csv`, en-tête compris : 13
+- Différence entre `.status_code` et `.json()` : L'un renvoie le code de statut et l'autre la réponse json
+- Utilité du paramètre `timeout` : Éviter le blocage infini du programme
 
 <a id="j-m12"></a>
 ## M12 — README et rendu
 
-- Le test de remise à zéro a fonctionné en suivant seulement le README (oui / non) : …
-- Ce que j'ai dû corriger dans le README après ce test : …
-- Contenu de mon zip, fichier par fichier : …
+- Le test de remise à zéro a fonctionné en suivant seulement le README (oui / non) : oui
+- Ce que j'ai dû corriger dans le README après ce test : rien
+- Contenu de mon zip, fichier par fichier : 
+ ![[Pasted image 20261106162950.png]]
 
 ### Mes choix techniques (3 à 5 lignes)
 
-- Source de données retenue et pourquoi : …
-- Compte de connexion et pourquoi : …
-- Gestion des erreurs : …
-- Ce que j'ajouterais pour mettre l'API en production : …
+- Source de données retenue et pourquoi : postgres, plus scalable
+- Compte de connexion et pourquoi : lecteur_olist pour la sécurité (select only)
+- Gestion des erreurs : c'est géré avec les `raise HTTPException`
+- Ce que j'ajouterais pour mettre l'API en production : je sais pas
 
 ### Message à Mariana (3 lignes, sans jargon)
 
 - Ce que Rafael peut faire maintenant : …
-- D'où viennent les chiffres : …
+- D'où viennent les chiffres : ...
 - Le chiffre qui prouve que c'est juste : …
+Nous avons construit une API qui permet à Rafael d'accéder de facon dynamique aux indicateurs voulus (chiffre d'affaires mensuel, meilleures catégories, chiffres par État) en piochant dans les données répertoriées dans la base PostgreSQL. Nous avons aussi établis des tests pour vérifier la véracité des infos.
